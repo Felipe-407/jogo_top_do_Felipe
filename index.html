@@ -1,1 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Clique Rápido</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #start-btn {
+            font-size: 20px;
+            padding: 20px 40px;
+            background-color: #FF5722;
+        }
+
+        #time-display {
+            font-size: 22px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        #message {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Jogo de Clique Rápido</h1>
+    <p>Quando o botão mudar de cor, clique o mais rápido possível!</p>
+    <button id="start-btn" onclick="startGame()">Começar Jogo</button>
+    <p id="time-display">Tempo: -- segundos</p>
+    <p id="message"></p>
+</div>
+
+<script>
+    let startButton = document.getElementById("start-btn");
+    let timeDisplay = document.getElementById("time-display");
+    let messageDisplay = document.getElementById("message");
+    let timer;
+    let gameStarted = false;
+    let startTime;
+    
+    function startGame() {
+        if (gameStarted) return; // Impede de reiniciar o jogo
+
+        messageDisplay.textContent = "";
+        timeDisplay.textContent = "Tempo: -- segundos";
+        
+        // Mudando o botão para estado de "pronto para clicar"
+        startButton.textContent = "Clique Agora!";
+        startButton.style.backgroundColor = "#4CAF50";
+
+        // Espera de 2 a 5 segundos antes de mudar a cor
+        let waitTime = Math.floor(Math.random() * 3000) + 2000;
+        
+        timer = setTimeout(function() {
+            // Mudar a cor do botão para sinalizar que pode clicar
+            startButton.textContent = "Clique Aqui!";
+            startButton.style.backgroundColor = "#FF5722";
+
+            startTime = Date.now(); // Marca o tempo inicial do clique
+            gameStarted = true;
+        }, waitTime);
+    }
+
+    startButton.addEventListener('click', function() {
+        if (!gameStarted) return; // Se o jogo não foi iniciado, ignora o clique
+
+        let endTime = Date.now();
+        let reactionTime = (endTime - startTime) / 1000; // Tempo em segundos
+
+        // Exibe o tempo de resposta
+        timeDisplay.textContent = "Tempo: " + reactionTime.toFixed(2) + " segundos";
+        
+        messageDisplay.textContent = "Você foi rápido! Tente novamente.";
+        gameStarted = false; // Reseta o estado do jogo
+        startButton.textContent = "Começar Jogo"; // Restaura o botão inicial
+        startButton.style.backgroundColor = "#FF5722"; // Cor original
+    });
+</script>
+
+</body>
+</html>
 
